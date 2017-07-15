@@ -1,6 +1,3 @@
-library(shiny)
-library(shinyjs)
-# Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
       
       observeEvent(input$indeed, {
@@ -140,7 +137,7 @@ shinyServer(function(input, output, session) {
       output$indeed_pic <- renderImage({
             
             return(list(src = "www/indeed_logo.png", contentType = "www/png", alt = "indeed_logo", width = 200, 
-                        height = 30, align = "left"))
+                        height = "40px", align = "left"))
             
       }, deleteFile = FALSE)
 })

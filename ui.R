@@ -1,5 +1,3 @@
-library(shiny)
-library(shinyjs)
 source("./global.R")
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -36,8 +34,9 @@ shinyUI(fluidPage(
     mainPanel(
             
             conditionalPanel(condition = "input.indeed%2==1",
-                           imageOutput("indeed_pic"),
-                           hr(id="hr3"))
+                           imageOutput("indeed_pic",height = "30px"),
+                           hr())
+            
             
        
     )
