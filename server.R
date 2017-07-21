@@ -90,17 +90,17 @@ shinyServer(function(input, output, session) {
       dist_link <- reactive({
             
             validate(
-                  need(!is.na(searchLink()) && !is.null(searchLink()) && nrow(searchLink())>1, "Please waiting for a moment")
+                  need(!is.na(searchLink()) && !is.null(searchLink()) && nrow(searchLink())>2, "Please waiting for a moment")
             )
             
             str_replace_all(paste(indeed_url,job_title() %>% str_trim() %>% str_replace(pattern = " ", replacement = "+"),"+", paste(searchLink()[with(searchLink(),which( salary == salary_filter() & jt == jobtype_filter() & locs == locs_filter() & comps == comps_filter() & exper == exps_filter())),c(2,4,6,8,10)] ,collapse = ""),sep=""), pattern = "ALL", replacement = "")
       })
             
-      output$search_url <- renderText({
-
-            dist_link()
-
-      })
+      # output$search_url <- renderText({
+      # 
+      #       dist_link()
+      # 
+      # })
       
       jobs <- eventReactive(input$act_search,{
             
@@ -114,7 +114,11 @@ shinyServer(function(input, output, session) {
 
             webs <- get_webs(links = links)
 
+            validate_component(webs)
+            
             dt <- lapply(X = webs, form_table) %>% rbindlist()
+            
+            validate_component(dt)
             
             dt
       })
@@ -151,7 +155,7 @@ shinyServer(function(input, output, session) {
       output$job_list <- renderDataTable({
             
             validate(
-                  need(!is.null(jobs())||!is.na(jobs()), "Please wait for a moment")
+                  need(!is.null(jobs())&&!is.na(jobs())&&nrow(jobs())>2, "Please wait for a moment")
             )
             
             jobs() %>% select(-position_bak,-comps_bak,-lat,-lng)

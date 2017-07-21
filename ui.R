@@ -63,7 +63,7 @@ shinyUI(fluidPage(
                          conditionalPanel(condition = "input.indeed%2==1",
                                           imageOutput("indeed_pic1",height = "30px"),
                                           hr(),
-                                          textOutput("search_url"),
+                                          # textOutput("search_url"),
                                           helpText("The table in this page will show the detailed information about the positions you selected."),
                                           dataTableOutput(outputId = "job_list")),icon = icon("modal-window",lib="glyphicon")),
                 tabPanel("Employers",

@@ -71,13 +71,25 @@ form_table <- function(wb){
             }
       })
       
+      validate_component(position_web_pages)
+      validate_component(position_titles)
+      validate_component(summary)
+      validate_component(locs)
+      validate_component(comps_prof)
+      validate_component(comps)
+      validate_component(comps_)
+      
       dt <- data.frame(position =  paste("<a href=", position_web_pages," target='_blank' class='btn btn-primary'>", position_titles, "</a>", sep="" ),  company_name = comps_, breif_info = summary, locations = locs,position_bak = position_titles,comps_bak = comps)
       
       geos <- lapply(paste(dt$comps_bak , dt$locations, " United States",sep=", "),geocode) %>% rbindlist()
       
+      validate_component(geos)
+      
       dt$lat <- geos$lat
       
       dt$lng <- geos$lon
+      
+      validate_component(dt)
       
       dt <- unique(dt)
       
