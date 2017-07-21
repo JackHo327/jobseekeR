@@ -8,7 +8,7 @@ job_position <- "data scientist" %>% str_replace(pattern = " ",replacement = "+"
 
 # url_ <- "https://www.indeed.com/jobs?q=data+scientist+$50,000&rbc=Mount+Sinai+Health+System&rbl=New+York,+NY&jcid=c007936ceb766fe5&jlid=45f6c4ded55c00bf&jt=fulltime&explvl=mid_level"
 
-url<-paste("https://www.indeed.com/jobs?q=",job_position,"&l=", sep="")
+url<-paste("https://www.indeed.com/jobs?q=",job_position,"&start=10", sep="")
 
 urltp <-"https://www.indeed.com/jobs?q=data+scientist+$50,000&jt=fulltime"
 
@@ -63,34 +63,49 @@ exps$exps_query <- sapply(1:nrow(comps), function(x){
 # job title
 web %>%  html_nodes(xpath = "//*[@id='resultsCol']/div/h2") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")
 
-web %>%  html_nodes(xpath = "//*[@class='  row  result']/h2") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")
-
-# companies name
-web %>%  html_nodes(xpath = "//*[@id='resultsCol']/div/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="") %>% str_trim()
-
-web %>%  html_nodes(xpath = "//*[@class='company']/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")%>% str_trim()
-
-# job titles
-web %>%  html_nodes(xpath = "//*[@class='jobtitle']/a") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")%>% str_trim()
-
 # job title links
-web %>%  html_nodes(xpath = "//*[@class='jobtitle']/a") %>% html_attr(name="href")
+paste("https://www.indeed.com/rc/clk?jk=569369e5a1607836&fccid=c007936ceb766fe5",web %>%  html_nodes(xpath = "//*[@class='jobtitle']/a") %>% html_attr(name="href"),sep="")
 
+# # companies name
+# web %>%  html_nodes(xpath = "//*[@id='resultsCol']/div/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="") %>% str_trim()
 
 # company
-web %>%  html_nodes(xpath = "//*[@class='company']") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")%>% str_trim()
+web %>%  html_nodes(xpath = "//*[@class='company']/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")%>% str_trim()
 
 # company link
-# web %>%  html_nodes(xpath = "//*[@class = 'company']/span") %>% html_attrs() %>% sapply(function(x){
-#       if(!is.null(x)||!is.na(x)||length(x)!=0){
-#             return(paste(x[[1]],"?",str_replace_all(x[[3]],pattern = "this\\.href \\= appendParamsOnce\\(this\\.href\\, \\'|\\'\\)",replacement=""),sep=""))
-#       }else{
-#             return(NA)
-#       }
-#       # x[1]
-# })
+web %>%  html_nodes(xpath = "//*[@class='company']") %>% html_nodes("span") %>% html_node("a") %>% html_attr("href")
+# some companies do not have length
+
+# compnay locations
+paste(comps ,web %>% html_nodes(xpath = "//*[@itemprop='jobLocation']/span/span") %>% html_text(),sep=", ")
+
+# summary
+web %>% html_nodes(xpath = "//*[@class='snip']/div/span") %>% html_text() %>% str_replace_all(pattern = "\\\n|\\/","")
+
+### test
+links <- paste("https://www.indeed.com/jobs?q=data+scientist",seq(0,40,by=10), sep="&start=")
+
+webs <- get_webs(links = links)
+
+bak <- lapply(webs,form_table) %>%rbindlist() 
+
+tmp <- data.frame(table(bak$comps_bak),stringsAsFactors = F)
+
+tmp$Var1 <- as.character(tmp$Var1)
+
+tmp <- tmp %>% arrange(desc(Freq))
+
+tmp$Var1 <- factor(tmp$Var1,levels= unique(tmp$Var1)[order(tmp$Freq,decreasing = T)])
+
+plot_ly(data=tmp,x=~Var1,y=~Freq,type = "bar") %>% layout(xaxis = list(title="",tickcolor=toRGB("blue"),tickfont=list(size=10)))
+      
+      layout(xaxis= list(title="",tickcolor="blue",tickfont=list(size=8)),categoryarray = ~Var1, categoryorder = "array")
 
 
+loc_data <- bak %>% select(position_bak, comps_bak, lat, lng)
 
+loc_data <- na.omit(loc_data)
 
-# //*[@id="p_e95491e045d87177"]/span[1]
+loc_data <- rbind(loc_data,data.frame(position_bak="You",comps_bak="Place you stay", lat=111, lng=1))
+
+loc_data %>% leaflet() %>% addTiles() %>% addCircleMarkers(lng=~lng, lat=~lat,clusterOptions=markerClusterOptions(),popup = ~paste(position_bak,comps_bak,sep=" -- "),color = c(rep("blue",length=nrow(loc_data)-1),"red"))

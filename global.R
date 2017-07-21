@@ -8,7 +8,10 @@ library(plotly)
 library(shiny)
 library(dplyr)
 library(shinyjs)
+library(data.table)
+library(shinysky)
+library(ggmap)
 
-source("./funcs.R")
+source("./func-s.R")
 
 indeed_url <- "https://www.indeed.com/jobs?q="
