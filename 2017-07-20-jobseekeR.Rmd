@@ -40,32 +40,22 @@ Just **allow** it because it will affect the results in `leaflet`.
 
 After choosing the platform, then it will automatic load some scripts to download some essential filters. You just need to set some filters and click the **Search** button @ the bottom of the left panel, then the protal will find results you wanted for you.
 
-<br>
-<br>
+<div style="width:100%;height:80%;" align="center">
 
-<div style="width:40%;height:80%;position:absolute;margin-right:5%; margin-left:5%;" >
-<img src="./www/jbkr-05.png" width = 80%, height=100% />
-</div>
+<img src="./www/jbkr-05.png"  style="width:43%;height:40%"/>
 
-<div style="width:40%;height:80%;position:absolute;margin-right:5%; margin-left:55%;" >
-<img src="./www/jbkr-06.png" width = 80%, height=100% />
+<img src="./www/jbkr-06.png"  style="width:43%;height:40%"/>
+
 </div>
 
 ******
 
-In the end, the data will be listed on three different tabs:
+Also, you could sleuth the data by browsering the other two tabpanels:
 
-<br>
-<br>
+<div style="width:100%;height:80%;" align="center">
 
-<div style="width:30%;height:30%;position:absolute;margin-right:2%; margin-left:72%;" >
-<img src="./www/jbkr-08.png" width = 80%, height=20% />
-</div>
+<img src="./www/jbkr-07.png"  style="width:43%;height:40%"/>
 
-<div style="width:30%;height:30%;position:absolute;margin-right:52%; margin-left:33%;" >
-<img src="./www/jbkr-07.png" width = 80%, height=30% />
-</div>
+<img src="./www/jbkr-08.png"  style="width:43%;height:40%"/>
 
-<div style="width:30%;height:30%;position:absolute;margin-right:70%; margin-left:3%;" >
-<img src="./www/jbkr-06.png" width = 80%, height=30% />
 </div>

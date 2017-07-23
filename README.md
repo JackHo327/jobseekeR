@@ -18,9 +18,9 @@ It is a simple shiny-based job searching platform.
 It is easily to use this app:    
 
   + Step 1: Enter the position you want to search in the upper-left text box
-  + Step 2: Choose Indeed.com as the platform you want to use (temporarily it is the only platform that is supportted)
+  + Step 2: Choose Indeed.com as the platform you want to use (temporarily it is the only platform that jobseekeR supports)
   + Step 3: Set filters as you want to (**considering to the quality of processors in the backend is not that powerful enough, you'd better do not set too many records, 30 - 60 are the recommended options**)
-  + Step 4: Wait for a moment and observe your results freely
+  + Step 4: Click the `Search` button and then wait for a moment and observe your results freely
 
 
 ### packages used:    
