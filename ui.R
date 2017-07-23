@@ -30,11 +30,11 @@ shinyUI(fluidPage(
             shinyjs::useShinyjs(),
             busyIndicator(),
             textInput(inputId = "title" ,label = "Job Position:",value = "",placeholder = "position"),
-            h3(id="h3-1","Choose One Platform:"),
+            h4(id="h3-1","Choose One Platform:"),
             hr(id="hr1"),
             shiny::actionButton(inputId="indeed",label=img(src = "indeed_logo.png",height = "100%",width="100%"),width="100%"),
             hr(id="hr2"),
-            h5(id="h5-1","Glassdoor's section is under development, only indeed is open for the public use."),
+            h6(id="h5-1","Glassdoor's section is under development, only indeed is open for the public use."),
             shiny::actionButton(inputId="glassdoor",label=img(src = "glassdoor_logo.png",height = "100%",width="100%"),width="100%"),
             conditionalPanel(
                   condition = "input.indeed%2==1",
@@ -44,7 +44,7 @@ shinyUI(fluidPage(
                   hidden(h5(id="h5-1","Glassdoor's section is under development, only indeed is open for the public use.")),
                   hidden(actionButton(inputId="glassdoor",label=img(src = "glassdoor_logo.png",height = "100%",width="100%"),width="100%")),
                   hidden(hr(id="hr2","")),
-                  h3("Choose Your Filters:"),
+                  h4("Choose Your Filters:"),
                   numericInput(inputId="num_job_search",label = "Enter the number of records you want to see:", value = 30, min = 10, step = 10),
                   uiOutput("salaryOptions"),
                   uiOutput("jobTypeOptions"),
@@ -53,7 +53,7 @@ shinyUI(fluidPage(
                   uiOutput("expOptions"),
                   shiny::actionButton(inputId="act_search",label ="Search", icon=icon("search",lib="glyphicon"),width = "100%")
             ),
-            width = 3
+            width = 2
     ),
 
     # show data and figures
@@ -64,10 +64,7 @@ shinyUI(fluidPage(
                                           imageOutput("indeed_pic1",height = "30px"),
                                           hr(),
                                           helpText("The table in this page will show the detailed information about the positions you selected."),
-                                          column(
-                                          dataTableOutput(outputId = "job_list"),
-                                          width = 9
-                                          )),icon = icon("modal-window",lib="glyphicon")),
+                                          div(dataTableOutput(outputId = "job_list"), style="font-size: 80%; width: 100%")),icon = icon("modal-window",lib="glyphicon")),
                 tabPanel("Employers",
                          conditionalPanel(condition = "input.indeed%2==1",
                          imageOutput("indeed_pic2",height = "30px"),
@@ -84,7 +81,7 @@ shinyUI(fluidPage(
                                           leafletOutput("position_leaflet_locs",height=500)
                          ), icon= icon("map-marker", lib="glyphicon"))
           ),
-            width = 9
+            width = 10
     )
   )
 ))

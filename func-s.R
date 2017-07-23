@@ -56,7 +56,7 @@ form_table <- function(wb){
       
       position_web_pages <- paste("https://www.indeed.com",c(web %>% html_nodes(xpath = "//*[@class='  row  result']/h2/a") %>% html_attr(name = "href"), web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/h2/a") %>% html_attr(name = "href")),sep="")
       
-      pos <- paste("<a href=", position_web_pages," target='_blank' class='btn btn-primary'>", position_titles, "</a>", sep="" ) 
+      pos <- paste("<a href=", position_web_pages," target='_blank' style='font-size:10px' class='btn btn-primary'>", position_titles, "</a>", sep="" ) 
       
       comps <- web %>% html_nodes(xpath = "//*[@class='company']/span") %>%html_text() %>% str_replace_all(pattern = "\\\n",replacement = "") %>% str_trim()
       
@@ -66,7 +66,7 @@ form_table <- function(wb){
       
       summ <- c(web %>% html_nodes(xpath = "//*[@class='  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""),web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""))
       
-      comps_ <- sapply(paste("<a href=", comps_prof," target='_blank' class='btn btn-primary'>", comps, "</a>", sep="" ), function(x){
+      comps_ <- sapply(paste("<a href=", comps_prof," target='_blank' style='font-size:10px' class='btn btn-primary'>", comps, "</a>", sep="" ), function(x){
             if(str_detect(string = x, pattern = 'NA')){
                   str_extract_all(string = x, pattern = "\\>.*\\<",simplify = T) %>% str_replace_all(pattern = "\\>|\\<", replacement = "")
             }else{
@@ -80,7 +80,9 @@ form_table <- function(wb){
             need(nrow(dt)>0,"nrow(dt)>0")
       )
       
-      geos <- lapply(paste(dt$comps_bak , dt$locations, sep=", "), geocode) %>% rbindlist()
+      geos <- lapply(paste(dt$comps_bak , dt$locations, sep=", "), function(x){
+            geocode(x, source = "dsk")
+            }) %>% rbindlist()
       # 
       validate_component(geos)
       # 
