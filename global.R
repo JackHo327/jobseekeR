@@ -15,3 +15,5 @@ library(ggmap)
 source("./func-s.R")
 
 indeed_url <- "https://www.indeed.com/jobs?q="
+
+

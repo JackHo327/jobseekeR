@@ -4,15 +4,16 @@
 # only for testing.
 # only for testing.
 
-job_position <- "data scientist" %>% str_replace(pattern = " ",replacement = "+")
+job_position <- "software developer" %>% str_replace(pattern = " ",replacement = "+")
 
-# url_ <- "https://www.indeed.com/jobs?q=data+scientist+$50,000&rbc=Mount+Sinai+Health+System&rbl=New+York,+NY&jcid=c007936ceb766fe5&jlid=45f6c4ded55c00bf&jt=fulltime&explvl=mid_level"
-
-url<-paste("https://www.indeed.com/jobs?q=",job_position,"&start=10", sep="")
+url<-paste("https://www.indeed.com/jobs?q=",job_position, sep="")
 
 urltp <-"https://www.indeed.com/jobs?q=data+scientist+$50,000&jt=fulltime"
 
 web <- read_html(curl(url, handle = curl::new_handle("useragent" = "Mozilla/5.0")))
+
+web <- read_html(url)
+
 web <- read_html(curl(urltp, handle = curl::new_handle("useragent" = "Mozilla/5.0")))
 # web <- read_html(curl(urltp, handle = curl::new_handle("useragent" = "Chrome/59.0.3071.115")))
 
@@ -61,29 +62,37 @@ exps$exps_query <- sapply(1:nrow(comps), function(x){
 }) %>% unlist()
 
 # job title
-web %>%  html_nodes(xpath = "//*[@id='resultsCol']/div/h2") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")
+# web %>%  html_nodes(xpath = "//*[@id='  row  result']/div/h2") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")
+
+c(web %>% html_nodes(xpath = "//*[@class='  row  result']/h2/a") %>% html_text(), web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/h2/a") %>% html_text()) %>% str_trim()
 
 # job title links
-paste("https://www.indeed.com/rc/clk?jk=569369e5a1607836&fccid=c007936ceb766fe5",web %>%  html_nodes(xpath = "//*[@class='jobtitle']/a") %>% html_attr(name="href"),sep="")
+# paste("https://www.indeed.com",web %>%  html_nodes(xpath = "//*[@class='jobtitle']/a") %>% html_attr(name="href"),sep="")
+
+paste("https://www.indeed.com",c(web %>% html_nodes(xpath = "//*[@class='  row  result']/h2/a") %>% html_attr(name = "href"), web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/h2/a") %>% html_attr(name = "href")),sep="")
 
 # # companies name
 # web %>%  html_nodes(xpath = "//*[@id='resultsCol']/div/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="") %>% str_trim()
 
 # company
-web %>%  html_nodes(xpath = "//*[@class='company']/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")%>% str_trim()
+# web %>%  html_nodes(xpath = "//*[@class='  row  result']/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")%>% str_trim()
+
+web %>% html_nodes(xpath = "//*[@class='company']/span") %>%html_text() %>% str_replace_all(pattern = "\\\n",replacement = "") %>% str_trim()
 
 # company link
 web %>%  html_nodes(xpath = "//*[@class='company']") %>% html_nodes("span") %>% html_node("a") %>% html_attr("href")
+
 # some companies do not have length
 
 # compnay locations
 paste(comps ,web %>% html_nodes(xpath = "//*[@itemprop='jobLocation']/span/span") %>% html_text(),sep=", ")
 
 # summary
-web %>% html_nodes(xpath = "//*[@class='snip']/div/span") %>% html_text() %>% str_replace_all(pattern = "\\\n|\\/","")
+# web %>% html_nodes(xpath = "//*[@class='snip']/div/span") %>% html_text() %>% str_replace_all(pattern = "\\\n|\\/","")
+c(web %>% html_nodes(xpath = "//*[@class='  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""),web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""))
 
 ### test
-links <- paste("https://www.indeed.com/jobs?q=data+scientist",seq(0,40,by=10), sep="&start=")
+links <- paste("https://www.indeed.com/jobs?q=software+developer+",seq(0,20,by=10), sep="&start=")
 
 webs <- get_webs(links = links)
 
@@ -109,3 +118,6 @@ loc_data <- na.omit(loc_data)
 loc_data <- rbind(loc_data,data.frame(position_bak="You",comps_bak="Place you stay", lat=111, lng=1))
 
 loc_data %>% leaflet() %>% addTiles() %>% addCircleMarkers(lng=~lng, lat=~lat,clusterOptions=markerClusterOptions(),popup = ~paste(position_bak,comps_bak,sep=" -- "),color = c(rep("blue",length=nrow(loc_data)-1),"red"))
+
+
+

@@ -13,7 +13,7 @@ get_web <- function(url, search_contents){
       URL <- paste(url, sc, "&l=", sep = "")
       
       web <- read_html(curl(URL, handle = new_handle(useragent = "Mozilla/5.0", CONNECTTIMEOUT = 120)))
-      
+
       web
 }
 
@@ -40,7 +40,8 @@ get_webs <- function(links){
       )
       
       webs <- lapply(links, function(x){
-            read_html(curl(x, handle = new_handle(useragent = "Mozilla/5.0", CONNECTTIMEOUT = 40)))
+            read_html(curl(x, handle = new_handle(useragent = "Mozilla/5.0", CONNECTTIMEOUT = 120)))
+            # read_html(x)
       })
       
       webs
@@ -51,17 +52,19 @@ form_table <- function(wb){
       
       web <- wb
       
-      position_titles <- web %>%  html_nodes(xpath = "//*[@id='resultsCol']/div/h2") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")
+      position_titles <- c(web %>% html_nodes(xpath = "//*[@class='  row  result']/h2") %>% html_text(), web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/h2") %>% html_text()) %>% str_trim()
       
-      position_web_pages <- paste("https://www.indeed.com", web %>%  html_nodes(xpath = "//*[@class='jobtitle']/a") %>% html_attr(name="href"),sep="")
+      position_web_pages <- paste("https://www.indeed.com",c(web %>% html_nodes(xpath = "//*[@class='  row  result']/h2/a") %>% html_attr(name = "href"), web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/h2/a") %>% html_attr(name = "href")),sep="")
       
-      comps <- web %>%  html_nodes(xpath = "//*[@class='company']/span") %>% html_text() %>% str_replace_all(pattern="\n",replacement="")%>% str_trim()
+      pos <- paste("<a href=", position_web_pages," target='_blank' class='btn btn-primary'>", position_titles, "</a>", sep="" ) 
+      
+      comps <- web %>% html_nodes(xpath = "//*[@class='company']/span") %>%html_text() %>% str_replace_all(pattern = "\\\n",replacement = "") %>% str_trim()
       
       comps_prof <- paste("https://www.indeed.com", web %>%  html_nodes(xpath = "//*[@class='company']") %>% html_nodes("span") %>% html_node("a") %>% html_attr("href"), sep="")
       
-      locs <- web %>% html_nodes(xpath = "//*[@itemprop='jobLocation']/span/span") %>% html_text()
+      locs <- web %>% html_nodes(xpath = "//*[@itemprop='jobLocation']/span/span") %>% html_text() %>% str_replace_all(pattern = "[0-9].*", replacement = "") %>% str_trim()
       
-      summary <- web %>% html_nodes(xpath = "//*[@class='snip']/div/span") %>% html_text() %>% str_replace_all(pattern = "\\\n|\\/","")
+      summ <- c(web %>% html_nodes(xpath = "//*[@class='  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""),web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""))
       
       comps_ <- sapply(paste("<a href=", comps_prof," target='_blank' class='btn btn-primary'>", comps, "</a>", sep="" ), function(x){
             if(str_detect(string = x, pattern = 'NA')){
@@ -71,27 +74,21 @@ form_table <- function(wb){
             }
       })
       
-      validate_component(position_web_pages)
-      validate_component(position_titles)
-      validate_component(summary)
-      validate_component(locs)
-      validate_component(comps_prof)
-      validate_component(comps)
-      validate_component(comps_)
+      dt <- data.frame(position = pos, company = comps_, brief_info = summ, locations = locs, position_bak=position_titles, comps_bak= comps, stringsAsFactors = FALSE)
       
-      dt <- data.frame(position =  paste("<a href=", position_web_pages," target='_blank' class='btn btn-primary'>", position_titles, "</a>", sep="" ),  company_name = comps_, breif_info = summary, locations = locs,position_bak = position_titles,comps_bak = comps)
+      validate(
+            need(nrow(dt)>0,"nrow(dt)>0")
+      )
       
-      geos <- lapply(paste(dt$comps_bak , dt$locations, " United States",sep=", "),geocode) %>% rbindlist()
-      
+      geos <- lapply(paste(dt$comps_bak , dt$locations, sep=", "), geocode) %>% rbindlist()
+      # 
       validate_component(geos)
-      
+      # 
       dt$lat <- geos$lat
-      
+      #
       dt$lng <- geos$lon
-      
-      validate_component(dt)
-      
+
       dt <- unique(dt)
-      
+
       dt
 }

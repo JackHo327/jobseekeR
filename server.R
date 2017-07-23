@@ -90,17 +90,11 @@ shinyServer(function(input, output, session) {
       dist_link <- reactive({
             
             validate(
-                  need(!is.na(searchLink()) && !is.null(searchLink()) && nrow(searchLink())>2, "Please waiting for a moment")
+                  need(!is.na(searchLink()) && !is.null(searchLink()) && nrow(searchLink())>2, "Please waiting for a moment or RETRY SEARCHING")
             )
             
             str_replace_all(paste(indeed_url,job_title() %>% str_trim() %>% str_replace(pattern = " ", replacement = "+"),"+", paste(searchLink()[with(searchLink(),which( salary == salary_filter() & jt == jobtype_filter() & locs == locs_filter() & comps == comps_filter() & exper == exps_filter())),c(2,4,6,8,10)] ,collapse = ""),sep=""), pattern = "ALL", replacement = "")
       })
-            
-      # output$search_url <- renderText({
-      # 
-      #       dist_link()
-      # 
-      # })
       
       jobs <- eventReactive(input$act_search,{
             
@@ -114,51 +108,65 @@ shinyServer(function(input, output, session) {
 
             webs <- get_webs(links = links)
 
-            validate_component(webs)
+            # validate_component(webs)
             
             dt <- lapply(X = webs, form_table) %>% rbindlist()
             
-            validate_component(dt)
+            # validate_component(dt)
+            
+            validate(
+                  need(!is.null(dt) && !is.na(dt) && nrow(dt) > 1, "Please waiting for a moment or RETRY SEARCHING")
+            )
             
             dt
+      
       })
       
       output$company_plotly_hist <- renderPlotly({
-            tmp <- data.frame(table(jobs()[,6]), stringsAsFactors = F)
+            tmp <- jobs() %>% unique()
+            comps_bak <- tmp$comps_bak %>% str_to_upper()
+            comps_bak <- data.frame(comps_bak,stringsAsFactors = F)
+            tmp <- data.frame(table(comps_bak$comps_bak), stringsAsFactors = F)
             tmp$Var1 <- as.character(tmp$Var1)
             tmp$Var1 <- factor(tmp$Var1, levels = tmp$Var1[order(tmp$Freq,decreasing = TRUE)])
             plot_ly(data=tmp, y=~Freq, x=~Var1,type = "bar")%>%layout(xaxis = list(title="",tickcolor=toRGB("blue"),tickfont=list(size=6),tickangle=15), yaxis = list(title="Count"))
       })
-      
+
       output$locs_plotly_hist <- renderPlotly({
-            tmp <- data.frame(table(jobs()[,4]), stringsAsFactors = F)
+            a <- jobs() %>% unique()
+            tmp <- data.frame(table(a[,4]), stringsAsFactors = F)
             tmp$Var1 <- as.character(tmp$Var1)
             tmp$Var1 <- factor(tmp$Var1, levels = tmp$Var1[order(tmp$Freq,decreasing = TRUE)])
             plot_ly(data=tmp, y=~Freq, x=~Var1,type = "bar")%>%layout(xaxis = list(title="",tickcolor=toRGB("blue"),tickfont=list(size=6),tickangle=15), yaxis = list(title="Count"))
       })
-      
+
       output$position_leaflet_locs <- renderLeaflet({
-            
+
             loc_data <- jobs() %>% select(position_bak, comps_bak, lat, lng)
+
+            loc_data <- na.omit(loc_data) 
             
-            loc_data <- na.omit(loc_data)
+            loc_data <- unique(loc_data)
             
+            loc_data <- loc_data %>% filter(lat != "")
+
             validate(
                   need(nrow(loc_data)>0,"Please wait for downloading geocodes")
             )
-            
+
             loc_data <- rbind(loc_data,data.frame(position_bak="You",comps_bak="Your Current IP Address", lat=input$lat, lng=input$long))
-            
+
             loc_data %>% leaflet() %>% addTiles() %>% addCircleMarkers(lng=~lng, lat=~lat,clusterOptions=markerClusterOptions(),popup = ~paste(position_bak,comps_bak,sep=" -- "),color = c(rep("blue",length=nrow(loc_data)-1),"red"))
       })
       
       output$job_list <- renderDataTable({
             
             validate(
-                  need(!is.null(jobs())&&!is.na(jobs())&&nrow(jobs())>2, "Please wait for a moment")
+                  need(!is.null(jobs())&&!is.na(jobs())&&nrow(jobs())>0, "Please waiting for a moment or RETRY SEARCHING")
             )
             
             jobs() %>% select(-position_bak,-comps_bak,-lat,-lng)
+            # jobs() %>% select(-position_bak,-comps_bak)
             
       },escape = FALSE, options = list(pageLength=12))
 

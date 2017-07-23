@@ -2,10 +2,10 @@ name: jobseekeR
 title: jobseekeR
 account: jenhichho327
 server: shinyapps.io
-appId: 198447
-bundleId: 910723
+appId: 198702
+bundleId: 912493
 url: https://jenhichho327.shinyapps.io/jobseekeR/
-when: 1500607176.82269
+when: 1500802950.07113
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: 2017-07-20-jobseekeR.html|2017-07-20-jobseekeR.md|2017-07-20-jobseekeR.Rmd|DESCRIPTION.bak|WEBINFO.md|2017-07-20-jobseekeR-figure/unnamed-chunk-2-1.png
+ignoredFiles: 2017-07-20-jobseekeR.html|2017-07-20-jobseekeR.Rmd

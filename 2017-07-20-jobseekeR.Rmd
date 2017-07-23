@@ -3,7 +3,9 @@ title: "jobseekeR"
 subtitle: "A Simple Job Searching Web Application"
 author: "NOWHERE"
 date: "July 20, 2017"
-output: ioslides_presentation
+output:
+ slidy_presentation:
+  font_adjustmen: -1
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +16,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 [`jobseekeR`](https://github.com/JackHo327/jobseekeR) is one of my personal side projects, and it is a simple shiny-based job searching platform.
 
-Currently, it can support:
+Currently, it can temporarily support:
 
 - [Indeed.com](www.indeed.com) (I released its first [version 0.1.0](https://jenhichho327.shinyapps.io/jobseekeR/) for public testing)
 
@@ -24,34 +26,11 @@ In the future, I plan to make it support:
 - [Lagou.com](https://www.lagou.com/) (*to be cont'd*)
 - and some other popular job searching platform (TBA)
 
-## Packages Used
-The packages that I used are list below:
-
-- [shiny](https://shiny.rstudio.com/)
-- [shinyjs](https://github.com/daattali/shinyjs)
-- [dplyr](https://github.com/tidyverse/dplyr)
-- [stringr](https://github.com/tidyverse/stringr)
-- [leaftlet](https://rstudio.github.io/leaflet/)
-- [plotly](https://plot.ly/r/)
-- [rvest](https://cran.r-project.org/web/packages/rvest/index.html)
-- [curl](https://cran.r-project.org/web/packages/curl/index.html)
-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html)
-- [ggmap](https://github.com/dkahle/ggmap)
-- [shinysky](https://github.com/AnalytixWare/ShinySky)
-
 ## Quick Start
 
-Once you open the main page of [`jobseekeR`]([version 1-1.0.1](https://jenhichho327.shinyapps.io/jobseekeR/)), you will see a picture below:
+Once you open the main page of [`jobseekeR`]([version 1-1.0.1](https://jenhichho327.shinyapps.io/jobseekeR/)), you will get an alarm/request to access you current location from the browser.
 
-<div style="width:80%;height:80%;position:absolute;margin-risght:10%; margin-left:10%;" >
-<img src="./www/jbkr-01.png" width = 80%, height=100% />
-</div>
-
-******
-
-Thne you should get an alarm/request to access you current location from the browser.
-
-Just allow it because it will affect the results in `leaflet`.
+Just **allow** it because it will affect the results in `leaflet`.
 
 <div style="width:80%;height:80%;position:absolute;margin-right:10%; margin-left:10%;" >
 <img src="./www/jbkr-03.png" width = 80%, height=100% />
@@ -59,45 +38,34 @@ Just allow it because it will affect the results in `leaflet`.
 
 ******
 
-After you entering the job positions, then temporarily, you could only click the indeed.com.
+After choosing the platform, then it will automatic load some scripts to download some essential filters. You just need to set some filters and click the **Search** button @ the bottom of the left panel, then the protal will find results you wanted for you.
 
-<div style="width:80%;height:80%;position:absolute;margin-right:10%; margin-left:10%;" >
-<img src="./www/jbkr-02.png" width = 80%, height=100% />
-</div>
+<br>
+<br>
 
-******
-
-After choosing the platform, then it will automatic load some scripts to download some essential filters.
-
-<div style="width:80%;height:80%;position:absolute;margin-right:10%; margin-left:10%;" >
-<img src="./www/jbkr-04.png" width = 80%, height=100% />
-</div>
-
-******
-
-You could flexably set your filters and after clicking the **Search** button in the bottom of the left panel, then the platform will start computation and fetching data for you.
-
-<div style="width:80%;height:80%;position:absolute;margin-right:10%; margin-left:10%;" >
+<div style="width:40%;height:80%;position:absolute;margin-right:5%; margin-left:5%;" >
 <img src="./www/jbkr-05.png" width = 80%, height=100% />
 </div>
 
-******
-
-Wait for a moment, the data will be listed on the tabsets:
-
-<div style="width:80%;height:80%;position:absolute;margin-right:10%; margin-left:10%;" >
+<div style="width:40%;height:80%;position:absolute;margin-right:5%; margin-left:55%;" >
 <img src="./www/jbkr-06.png" width = 80%, height=100% />
 </div>
 
-
 ******
 
-<div style="width:80%;height:80%;position:absolute;margin-right:10%; margin-left:10%;" >
-<img src="./www/jbkr-07.png" width = 80%, height=100% />
+In the end, the data will be listed on three different tabs:
+
+<br>
+<br>
+
+<div style="width:30%;height:30%;position:absolute;margin-right:2%; margin-left:72%;" >
+<img src="./www/jbkr-08.png" width = 80%, height=20% />
 </div>
 
-******
+<div style="width:30%;height:30%;position:absolute;margin-right:52%; margin-left:33%;" >
+<img src="./www/jbkr-07.png" width = 80%, height=30% />
+</div>
 
-<div style="width:80%;height:80%;position:absolute;margin-right:10%; margin-left:10%;" >
-<img src="./www/jbkr-08.png" width = 80%, height=100% />
+<div style="width:30%;height:30%;position:absolute;margin-right:70%; margin-left:3%;" >
+<img src="./www/jbkr-06.png" width = 80%, height=30% />
 </div>

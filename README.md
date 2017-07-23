@@ -4,14 +4,27 @@ JobseekeR is one of my side projects.
 
 It is a simple shiny-based job searching platform.
 
-- Supported Platform:    
+### Supported Platform:    
+
   + ~~[Indeed](www.indeed.com) (*working in process*)~~    
       * [version 0.1.0](https://jenhichho327.shinyapps.io/jobseekeR/)  **finished**
   + [Glassdoor](www.glassdoor.com) (*to be cont'd*)
   + [Lagou.com](https://www.lagou.com/) (*to be cont'd*)
   + TBA
 
-- packages used:    
+
+### Instructions    
+
+It is easily to use this app:    
+
+  + Step 1: Enter the position you want to search in the upper-left text box
+  + Step 2: Choose Indeed.com as the platform you want to use (temporarily it is the only platform that is supportted)
+  + Step 3: Set filters as you want to (**considering to the quality of processors in the backend is not that powerful enough, you'd better do not set too many records, 30 - 60 are the recommended options**)
+  + Step 4: Wait for a moment and observe your results freely
+
+
+### packages used:    
+
   + [shiny](https://shiny.rstudio.com/)
   + [shinyjs](https://github.com/daattali/shinyjs) 
   + [dplyr](https://github.com/tidyverse/dplyr)
@@ -24,8 +37,12 @@ It is a simple shiny-based job searching platform.
   + [ggmap](https://github.com/dkahle/ggmap)
   + [shinysky](https://github.com/AnalytixWare/ShinySky)
 
-- user-agency:    
+
+### user-agency:    
+
   + "Mozilla/5.0"
+
+
 
 
 

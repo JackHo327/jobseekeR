@@ -63,24 +63,23 @@ shinyUI(fluidPage(
                          conditionalPanel(condition = "input.indeed%2==1",
                                           imageOutput("indeed_pic1",height = "30px"),
                                           hr(),
-                                          # textOutput("search_url"),
                                           helpText("The table in this page will show the detailed information about the positions you selected."),
                                           dataTableOutput(outputId = "job_list")),icon = icon("modal-window",lib="glyphicon")),
                 tabPanel("Employers",
                          conditionalPanel(condition = "input.indeed%2==1",
                          imageOutput("indeed_pic2",height = "30px"),
                          hr(),
-                         helpText("The barplot below will show how many positions does every company which you selected have."),
-                         plotlyOutput("company_plotly_hist",width = "100%", height="50%"),
-                         hr(),
-                         helpText("The barplot below will show how many positions does every locations (the `United States' means multi-place-hired-positions) which you selected have."),
-                         plotlyOutput("locs_plotly_hist",width = "100%", height="50%")),icon=icon("user",lib="glyphicon")),
+                         helpText("The barplots below will show how many positions does every company|locations have"),
+                         plotlyOutput("company_plotly_hist",width = "100%", height=300),
+                         plotlyOutput("locs_plotly_hist",width = "100%", height=300)
+                         )),
                 tabPanel("Logistics",
                          conditionalPanel(condition = "input.indeed%2==1",
-                         imageOutput("indeed_pic3",height = "30px"),
-                         hr(),
-                         helpText("The map will show your location (please allow your browser access to your location lat and lng) and where every position you searched is (the api could be called 5,000 times per day as a whole, and once it outnumbers the limitation, this function will not work)."),
-                         leafletOutput("position_leaflet_locs",height=780)), icon=icon("map-marker",lib="glyphicon"))
+                                          imageOutput("indeed_pic3",height = "30px"),
+                                          hr(),
+                                          helpText("The map will show your location and where every position you searched is (the api could be called 5,000 times per day as a whole, the results should be for reference only)."),
+                                          leafletOutput("position_leaflet_locs",height=500)
+                         ), icon= icon("map-marker", lib="glyphicon"))
           ),
             width = 9
     )
