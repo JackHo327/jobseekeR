@@ -3,9 +3,9 @@ title: jobseekeR
 account: jenhichho327
 server: shinyapps.io
 appId: 198702
-bundleId: 913767
+bundleId: 913834
 url: https://jenhichho327.shinyapps.io/jobseekeR/
-when: 1500893564.55022
+when: 1500899984.08824
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: 2017-07-20-jobseekeR.html|2017-07-20-jobseekeR.Rmd

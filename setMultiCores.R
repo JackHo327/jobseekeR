@@ -1,4 +1,5 @@
-cl <- makeCluster(detectCores(logical = F),"FORK")
+# cl <- makeCluster(detectCores(logical = F),"FORK")
+cl <- makeCluster(detectCores(logical = T),"FORK")
 # cl <- makeCluster(detectCores(),"PSOCK")
 # cl <- makeCluster(rep("localhost",detectCores()))
 
