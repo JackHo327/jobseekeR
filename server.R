@@ -1,4 +1,5 @@
 
+
 shinyServer(function(input, output, session) {
       
       observeEvent(input$indeed, {
@@ -106,12 +107,15 @@ shinyServer(function(input, output, session) {
 
             links <- paste(rep(x = dist_link(),length=length(page_seqs)), page_seqs, sep = "&start=")
 
-            webs <- get_webs(links = links)
+            # webs <- get_webs(links = links)
 
             # validate_component(webs)
             
-            dt <- lapply(X = webs, form_table) %>% rbindlist()
-            
+            # dt <- lapply(X = webs, form_table) %>% rbindlist()
+
+            # multicore computation
+            dt <- parLapply(cl, links, form_table) %>% rbindlist()
+
             # validate_component(dt)
             
             validate(

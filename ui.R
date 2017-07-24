@@ -1,4 +1,4 @@
-source("./global.R",local = TRUE)
+source("./global.R", local = TRUE)
 
 shinyUI(fluidPage(
   

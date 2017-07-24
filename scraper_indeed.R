@@ -92,7 +92,7 @@ paste(comps ,web %>% html_nodes(xpath = "//*[@itemprop='jobLocation']/span/span"
 c(web %>% html_nodes(xpath = "//*[@class='  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""),web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""))
 
 ### test
-links <- paste("https://www.indeed.com/jobs?q=software+developer+",seq(0,20,by=10), sep="&start=")
+links <- paste("https://www.indeed.com/jobs?q=software+developer+",seq(0,30,by=10), sep="&start=")
 
 webs <- get_webs(links = links)
 

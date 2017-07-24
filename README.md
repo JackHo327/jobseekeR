@@ -7,7 +7,8 @@ It is a simple shiny-based job searching platform.
 ### Supported Platform:    
 
   + ~~[Indeed](www.indeed.com) (*working in process*)~~    
-      * [version 0.1.0](https://jenhichho327.shinyapps.io/jobseekeR/)  **finished**
+      * ~~[version 0.1.0](https://jenhichho327.shinyapps.io/jobseekeR/)  **finished**~~
+      * [version 0.1.1](https://jenhichho327.shinyapps.io/jobseekeR/)  **add multicore computation -- finished**
   + [Glassdoor](www.glassdoor.com) (*to be cont'd*)
   + [Lagou.com](https://www.lagou.com/) (*to be cont'd*)
   + TBA
