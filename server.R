@@ -112,7 +112,7 @@ shinyServer(function(input, output, session) {
             # validate_component(webs)
             
             # dt <- lapply(X = webs, form_table) %>% rbindlist()
-
+         
             # multicore computation
             dt <- parLapply(cl, links, form_table) %>% rbindlist()
 
@@ -123,6 +123,7 @@ shinyServer(function(input, output, session) {
             )
             
             dt
+            # dt$brif_info <- str_replace(string = dt$brif_info, pattern = "^\\.experienceHeader.*21px\\}",replacement = "" )
       
       })
       
@@ -170,7 +171,6 @@ shinyServer(function(input, output, session) {
             )
             
             jobs() %>% select(-position_bak,-comps_bak,-lat,-lng)
-            # jobs() %>% select(-position_bak,-comps_bak)
             
       },escape = FALSE, options = list(pageLength=12))
 

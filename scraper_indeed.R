@@ -4,11 +4,13 @@
 # only for testing.
 # only for testing.
 
-job_position <- "software developer" %>% str_replace(pattern = " ",replacement = "+")
+job_position <- "data engineer" %>% str_replace(pattern = " ",replacement = "+")
 
 url<-paste("https://www.indeed.com/jobs?q=",job_position, sep="")
 
 urltp <-"https://www.indeed.com/jobs?q=data+scientist+$50,000&jt=fulltime"
+
+web <- url %>% html_session() %>% read_html()
 
 web <- read_html(curl(url, handle = curl::new_handle("useragent" = "Mozilla/5.0")))
 

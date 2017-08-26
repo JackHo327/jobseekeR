@@ -32,25 +32,11 @@ validate_component <- function(x){
       )
 }
 
-# get filtered websets
-#get_webs <- function(links){
-      
-      #validate(
-            #need(!is.na(links), !is.null(links), "Please wait for a moment")
-      #)
-      
-      #webs <- lapply(links, function(x){
-            #read_html(curl(x, handle = new_handle(useragent = "Mozilla/5.0", CONNECTTIMEOUT = 120)))
-            ## read_html(x)
-      #})
-      
-      #webs
-#}
-
 # form tables
 form_table <- function(x){
 
       web <- x %>% html_session(new_handle(useragent = "Mozilla/5.0", CONNECTTIMEOUT = 120)) %>% read_html()
+      # web <- x %>% html_session() %>% read_html()
       
       position_titles <- c(web %>% html_nodes(xpath = "//*[@class='  row  result']/h2") %>% html_text(), web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/h2") %>% html_text()) %>% str_trim()
       
@@ -63,17 +49,20 @@ form_table <- function(x){
       comps_prof <- paste("https://www.indeed.com", web %>%  html_nodes(xpath = "//*[@class='company']") %>% html_nodes("span") %>% html_node("a") %>% html_attr("href"), sep="")
       
       locs <- web %>% html_nodes(xpath = "//*[@itemprop='jobLocation']/span/span") %>% html_text() %>% str_replace_all(pattern = "[0-9].*", replacement = "") %>% str_trim()
-      
-      #summ <- c(web %>% html_nodes(xpath = "//*[@class='  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""),web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_replace_all(pattern = "\\\n.*",""))
-      summ1 <- web %>% html_nodes(xpath = "//*[@class='  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_split(pattern = "\\.\\.\\.")
-      summ1_1 <- sapply(summ1, function(x) x[1]) %>% str_replace_all("\\\n{3,}", ". ")
-      summ1_1 <- paste(summ1_1, "...", sep = "")
 
-      summ2 <- web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/table") %>% html_table() %>% unlist() %>% str_trim() %>% str_split(pattern = "\\.\\.\\.")
-      summ2_2 <- sapply(summ2, function(x) x[1]) %>% str_replace_all("\\\n{3,}", ". ")
-      summ2_2 <- paste(summ2_2, "...", sep = "")
+      summ1 <- web %>% html_nodes(xpath = "//*[@class='  row  result']/table") %>% html_table() %>% sapply(function(x){
+            t <- str_split(x,pattern = "[0-9]{1,}\\+? (day|days|hour|hours) ago")
+            tt <- t[[1]][1]
+            tt %>% str_replace("\\.experienceHeader.*21px\\}\\n\\n","") %>% str_replace(" Easily apply","")
+      })
 
-      summ <- c(summ1_1,summ2_2)
+      summ2 <- web %>% html_nodes(xpath = "//*[@class='lastRow  row  result']/table") %>% html_table() %>% sapply(function(x){
+            t <- str_split(x,pattern = "[0-9]{1,}\\+? (day|days|hour|hours) ago")
+            tt <- t[[1]][1]
+            tt %>% str_replace("\\.experienceHeader.*21px\\}\\n\\n","") %>% str_replace(" Easily apply","")
+      })
+
+      summ <- c(summ1,summ2)
 
       comps_ <- sapply(paste("<a href=", comps_prof," target='_blank' style='font-size:10px' class='btn btn-primary'>", comps, "</a>", sep="" ), function(x){
             if(str_detect(string = x, pattern = 'NA')){
