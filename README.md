@@ -10,7 +10,8 @@ It is easily to use this webapp:
     + *for the demo on the [shinyapps.io](https://nowhere.shinyapps.io/jobseekeR/), considering to the quality of the default processors procided in the backend is not that powerful enough, you'd better do not set too many records, 30 - 60 are the recommended options*.
   + Step 4: Click the `Search` button and then wait for a moment and observe your results freely.
 
-<img src = "https://jackho327.github.io/jobseekeR/www/indeed_demo.gif" /><br>
+<!-- <img src = "https://jackho327.github.io/jobseekeR/www/indeed_demo.gif" /><br> -->
+![](www/indeed_demo.gif)
 
 *To enjoy the logistics feature, please open your shiny app in browser and allow the location tracker; Or directly deploy it to your shinyapps portal.*
 
