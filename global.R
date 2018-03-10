@@ -18,4 +18,6 @@ source("./func-s.R")
 
 indeed_url <- "https://www.indeed.com/jobs?q="
 
+# set up multi-core computation
+# this might take several seconds because to initialize 
 source("./setMultiCores.R", local = TRUE)

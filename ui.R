@@ -61,13 +61,13 @@ shinyUI(fluidPage(
           tabsetPanel(
                 tabPanel("Job Positions",
                          conditionalPanel(condition = "input.indeed%2==1",
-                                          imageOutput("indeed_pic1",height = "30px"),
+                                          imageOutput("indeed_pic1",height = "40px"),
                                           hr(),
                                           helpText("The table in this page will show the detailed information about the positions you selected."),
                                           div(dataTableOutput(outputId = "job_list"), style="font-size: 80%; width: 100%")),icon = icon("modal-window",lib="glyphicon")),
                 tabPanel("Employers",
                          conditionalPanel(condition = "input.indeed%2==1",
-                         imageOutput("indeed_pic2",height = "30px"),
+                         imageOutput("indeed_pic2",height = "40px"),
                          hr(),
                          helpText("The barplots below will show how many positions does every company|locations have"),
                          plotlyOutput("company_plotly_hist",width = "100%", height=300),
@@ -75,10 +75,10 @@ shinyUI(fluidPage(
                          )),
                 tabPanel("Logistics",
                          conditionalPanel(condition = "input.indeed%2==1",
-                                          imageOutput("indeed_pic3",height = "30px"),
+                                          imageOutput("indeed_pic3",height = "40px"),
                                           hr(),
                                           helpText("The map will show your location and where every position you searched is (the api could be called 5,000 times per day as a whole, the results should be for reference only)."),
-                                          leafletOutput("position_leaflet_locs",height=500)
+                                          leafletOutput("position_leaflet_locs",height=600)
                          ), icon= icon("map-marker", lib="glyphicon"))
           ),
             width = 10
